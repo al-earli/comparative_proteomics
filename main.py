@@ -242,10 +242,10 @@ def store_raw_with_sampleMap_TMT(df, sampleMap_dict, non_avg_raw_df):
                 if sorted_sname.__contains__(sample_name) == True:
                     non_avg_raw_df[peptide_sequence][sample_name].append(intensity_val)
                 else:
-                    non_avg_raw_df[peptide_sequence][sample_name] = [intensity_val]
+                    non_avg_raw_df[peptide_sequence] = {sample_name : [intensity_val]}
                     sorted_sname.add(sample_name)
             else:
-                non_avg_raw_df[peptide_sequence][sample_name] = [intensity_val]
+                non_avg_raw_df[peptide_sequence] = {sample_name : [intensity_val]}
                 sorted_pseq.add(peptide_sequence)
                 
     return non_avg_raw_df
