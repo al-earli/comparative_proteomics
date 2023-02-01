@@ -197,6 +197,8 @@ def avg_raw_per_peptide_by_sample(raw_df):
         dur = round(end - start, ndigits = 10)
         print('Binary search ran in {} seconds'.format(dur))
         if found_state == -1:
+            idx_len = len(idx)
+            print('Peptide Sequences: ' + str(idx_len))
             idx.append(peptide_sequence)
             bubble_idx.append(peptide_sequence)
             # Perform bubble sort to enable binary search for speed up!
@@ -206,6 +208,7 @@ def avg_raw_per_peptide_by_sample(raw_df):
             end = time.time()
             dur = round(end - start, ndigits = 10)
             print('Bubble sort ran in {} seconds'.format(dur))
+
         if sample_name in matrix:
             matrix[sample_name].append(avg_intensity)
         else:
@@ -418,6 +421,10 @@ def binary_search(idx, word):
                 last = mid - 1
             else:
                 first = mid + 1
+    
+    if index > -1:
+        print('Matched existing ' + word)
+
     return index
 
 if __name__ == '__main__':
