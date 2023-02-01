@@ -187,7 +187,11 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
     # nested for loops to build the matrix to create the pandas dataframe
     matrix = {}
     sorted_sname_as_list = sorted_sname.irange()
+    print('Unique sample names: ' + str(len(sorted_sname_as_list)))
     sorted_pseq_as_list = sorted_pseq.irange()
+    print('Unique peptides: ' + str(len(sorted_pseq_as_list)))
+
+    print('Set up matrix for pandas dataframe.')
     for i in sorted_pseq_as_list.items():
         for j in sorted_sname_as_list.items():
             built_key = i + "_" + j
@@ -200,7 +204,7 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
                 v = avg_raw_df[built_key]
                 matrix[j].append(v)
     formatted_avg_raw_df = pd.DataFrame(matrix, index=sorted_pseq_as_list)
-
+    print('Finished creating pandas dataframe.')
     return formatted_avg_raw_df
 
 def avg_raw_per_peptide_by_sample(raw_df):
@@ -227,7 +231,7 @@ def store_raw_with_sampleMap_TMT(df, sampleMap_dict, non_avg_raw_df):
     # Because the same peptide will appear multiple times in the input file, we need to store the peptide intensities
     # for the same peptide sequence per sample in a list object to average after all the data has been appended.
     # Averaging happens in a separate function.
-
+    print('There are ' + str(len(non_avg_raw_df.keys())) + ' keys in the non averaged raw dictionary so far.')
     if len(non_avg_raw_df.keys()) > 0:
         sorted_idx = SortedList(non_avg_raw_df.keys())
     else:
