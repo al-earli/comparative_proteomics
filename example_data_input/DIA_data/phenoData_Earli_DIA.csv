@@ -1,0 +1,30 @@
+sample,disease,disease_type,category,source
+bd001,Hamartoma,Benign Disease,Benign,Indivumed
+bd002,Hamartoma,Benign Disease,Benign,Indivumed
+bd003,Hamartoma,Benign Disease,Benign,Indivumed
+bd004,Hamartoma,Benign Disease,Benign,Indivumed
+bd005,Hamartoma,Benign Disease,Benign,Indivumed
+bd006,Hamartoma,Benign Disease,Benign,Indivumed
+bd007,Hamartoma,Benign Disease,Benign,Indivumed
+bd008,Aspergillosis,Benign Disease,Benign,Indivumed
+bd009,Tuberculosis,Benign Disease,Benign,Indivumed
+bd010,Sarcoidosis,Benign Disease,Benign,Indivumed
+bd011,Pneumonia,Benign Disease,Benign,Indivumed
+bd012,Pneumonia,Benign Disease,Benign,Indivumed
+bd013,Pneumonia,Benign Disease,Benign,Indivumed
+bd014,Pneumonia,Benign Disease,Benign,Indivumed
+bd015,Pneumonia,Benign Disease,Benign,Indivumed
+bd017,Neoplasm,Benign Tumor,Benign,Indivumed
+bd018,Neoplasm,Benign Tumor,Benign,Indivumed
+bd019,Neoplasm,Benign Tumor,Benign,Indivumed
+bd020,Neoplasm,Benign Tumor,Benign,Indivumed
+bd021,Granuloma,Benign Disease,Benign,BioBank
+bd022,Granuloma,Benign Disease,Benign,BioBank
+bd023,Granuloma,Benign Disease,Benign,BioBank
+bd024,Granuloma,Benign Disease,Benign,BioBank
+bd025,Granuloma,Benign Disease,Benign,BioBank
+bd026,Pulmonary Fibrosis,Benign Disease,Benign,BioBank
+bd027,Inflammation,Benign Disease,Benign,BioBank
+bd028,Hamartoma,Benign Disease,Benign,BioBank
+bd029,Granuloma,Benign Disease,Benign,BioBank
+LU147,Cancer,Lung subtype unknown,Tumor,Stanford

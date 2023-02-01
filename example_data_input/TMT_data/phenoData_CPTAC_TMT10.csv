@@ -1,0 +1,201 @@
+sample,disease,disease_type,category,source
+C3N.01799,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01799.N,Normal,,Normal,CPTAC
+C3L.01890,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.01890.N,Normal,,Normal,CPTAC
+C3N.00572,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00572.N,Normal,,Normal,CPTAC
+C3N.02423,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02423.N,Normal,,Normal,CPTAC
+C3N.02729,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02729.N,Normal,,Normal,CPTAC
+C3L.00263,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00263.N,Normal,,Normal,CPTAC
+C3N.01410,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01410.N,Normal,,Normal,CPTAC
+C3N.00578,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00578.N,Normal,,Normal,CPTAC
+C3N.02587,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02587.N,Normal,,Normal,CPTAC
+C3L.00893,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00893.N,Normal,,Normal,CPTAC
+C3N.01488,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01488.N,Normal,,Normal,CPTAC
+C3N.01413,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01413.N,Normal,,Normal,CPTAC
+C3N.01030,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01030.N,Normal,,Normal,CPTAC
+C3N.02588,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02588.N,Normal,,Normal,CPTAC
+C3N.00552,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00552.N,Normal,,Normal,CPTAC
+C3L.01889,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.01889.N,Normal,,Normal,CPTAC
+C3N.00169,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00169.N,Normal,,Normal,CPTAC
+C3L.00422,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00422.N,Normal,,Normal,CPTAC
+C3L.00083,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00083.N,Normal,,Normal,CPTAC
+C3N.00551,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00551.N,Normal,,Normal,CPTAC
+C3N.02089,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02089.N,Normal,,Normal,CPTAC
+C3L.01682,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.01682.N,Normal,,Normal,CPTAC
+C3N.01016,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01016.N,Normal,,Normal,CPTAC
+C3N.00580,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00580.N,Normal,,Normal,CPTAC
+C3N.02000,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02000.N,Normal,,Normal,CPTAC
+C3N.01489,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01489.N,Normal,,Normal,CPTAC
+C3N.00737,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00737.N,Normal,,Normal,CPTAC
+C3N.01405,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01405.N,Normal,,Normal,CPTAC
+C3N.01416,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01416.N,Normal,,Normal,CPTAC
+C3N.02149,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02149.N,Normal,,Normal,CPTAC
+C3N.02424,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02424.N,Normal,,Normal,CPTAC
+C3L.00279,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00279.N,Normal,,Normal,CPTAC
+C3L.00095,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00095.N,Normal,,Normal,CPTAC
+C3N.02572,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02572.N,Normal,,Normal,CPTAC
+C3N.00559,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00559.N,Normal,,Normal,CPTAC
+C3N.00545,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00545.N,Normal,,Normal,CPTAC
+C3L.02345,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.02345.N,Normal,,Normal,CPTAC
+C3L.00093,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00093.N,Normal,,Normal,CPTAC
+C3L.00510,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00510.N,Normal,,Normal,CPTAC
+C3L.00913,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00913.N,Normal,,Normal,CPTAC
+C3L.00412,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00412.N,Normal,,Normal,CPTAC
+C3N.01415,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01415.N,Normal,,Normal,CPTAC
+C3N.00549,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00549.N,Normal,,Normal,CPTAC
+C3N.02433,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02433.N,Normal,,Normal,CPTAC
+C3N.01021,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01021.N,Normal,,Normal,CPTAC
+C3N.00203,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00203.N,Normal,,Normal,CPTAC
+C3L.01330,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.01330.N,Normal,,Normal,CPTAC
+C3N.00574,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00574.N,Normal,,Normal,CPTAC
+C3N.01071,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01071.N,Normal,,Normal,CPTAC
+C3N.00550,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00550.N,Normal,,Normal,CPTAC
+C3N.00167,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00167.N,Normal,,Normal,CPTAC
+C3L.00001,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00001.N,Normal,,Normal,CPTAC
+C3L.01632,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.01632.N,Normal,,Normal,CPTAC
+C3N.02155,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02155.N,Normal,,Normal,CPTAC
+C3N.00217,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00217.N,Normal,,Normal,CPTAC
+C3N.02002,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02002.N,Normal,,Normal,CPTAC
+C3N.02145,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02145.N,Normal,,Normal,CPTAC
+C3N.02586,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02586.N,Normal,,Normal,CPTAC
+C3L.02219,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.02219.N,Normal,,Normal,CPTAC
+C3N.00180,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00180.N,Normal,,Normal,CPTAC
+C3N.00704,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00704.N,Normal,,Normal,CPTAC
+C3N.02158,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02158.N,Normal,,Normal,CPTAC
+C3N.02421,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02421.N,Normal,,Normal,CPTAC
+C3N.00556,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00556.N,Normal,,Normal,CPTAC
+C3N.01072,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01072.N,Normal,,Normal,CPTAC
+C3L.00094,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00094.N,Normal,,Normal,CPTAC
+C3L.00144,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00144.N,Normal,,Normal,CPTAC
+C3N.00223,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00223.N,Normal,,Normal,CPTAC
+C3L.01924,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.01924.N,Normal,,Normal,CPTAC
+C3N.00433,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00433.N,Normal,,Normal,CPTAC
+C3L.01683,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.01683.N,Normal,,Normal,CPTAC
+C3N.00293,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00293.N,Normal,,Normal,CPTAC
+C3L.00009,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00009.N,Normal,,Normal,CPTAC
+C3N.00546,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00546.N,Normal,,Normal,CPTAC
+C3N.01414,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01414.N,Normal,,Normal,CPTAC
+C3N.02087,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02087.N,Normal,,Normal,CPTAC
+C3L.00140,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00140.N,Normal,,Normal,CPTAC
+C3N.02529,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02529.N,Normal,,Normal,CPTAC
+C3L.00368,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00368.N,Normal,,Normal,CPTAC
+C3N.02067,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02067.N,Normal,,Normal,CPTAC
+C3L.00080,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00080.N,Normal,,Normal,CPTAC
+C3N.00547,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00547.N,Normal,,Normal,CPTAC
+C3N.01023,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01023.N,Normal,,Normal,CPTAC
+C3N.01024,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01024.N,Normal,,Normal,CPTAC
+C3L.00973,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00973.N,Normal,,Normal,CPTAC
+C3L.02348,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.02348.N,Normal,,Normal,CPTAC
+C3L.02508,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.02508.N,Normal,,Normal,CPTAC
+C3N.00560,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00560.N,Normal,,Normal,CPTAC
+C3L.00604,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.00604.N,Normal,,Normal,CPTAC
+C3N.00199,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00199.N,Normal,,Normal,CPTAC
+C3N.00579,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00579.N,Normal,,Normal,CPTAC
+C3N.02582,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02582.N,Normal,,Normal,CPTAC
+C3L.02350,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.02350.N,Normal,,Normal,CPTAC
+C3N.00738,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00738.N,Normal,,Normal,CPTAC
+C3N.00959,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00959.N,Normal,,Normal,CPTAC
+C3N.02003,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.02003.N,Normal,,Normal,CPTAC
+C3N.00175,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.00175.N,Normal,,Normal,CPTAC
+C3N.01823,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3N.01823.N,Normal,,Normal,CPTAC
+C3L.02549,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.02549.N,Normal,,Normal,CPTAC
+C3L.02365,Cancer,Lung Adenocarcinoma,Tumor,CPTAC
+C3L.02365.N,Normal,,Normal,CPTAC
