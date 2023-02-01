@@ -190,14 +190,13 @@ def avg_raw_per_peptide_by_sample(raw_df):
 
         # Need to speed up search by running binary on a sorted list of peptide sequences.
         # Using SortedList method in SortedContainers library for this! .add function allows
-        # for inplace insertion of new values into the list while .index on the SortedList
-        # returns the index if found. If not found, returns ValueError that is used to then
-        # add the peptide sequence to the list.
+        # for inplace insertion of new values into the list while .__contains__ on the SortedList
+        # returns True if found. If not found, then add the peptide sequence to the list.
 
         # print('Running binary search')
         # start = time.time()
 
-        if sorted_idx.__contains__(peptide_sequence):
+        if sorted_idx.__contains__(peptide_sequence) == True:
             next
         else:
             idx.append(peptide_sequence)
