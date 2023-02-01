@@ -8,6 +8,7 @@ import os
 import re
 import pandas as pd
 import time
+from sortedcontainers import SortedList
 from statistics import mean
 from scipy.stats import zscore
 
@@ -176,7 +177,7 @@ def avg_raw_per_peptide_by_sample(raw_df):
     # for the sample
 
     idx = []
-    bubble_idx = []
+    sorted_idx = []
     matrix = {}
     for k, v in raw_df.items():
         k_parts = re.split('_', k)
@@ -188,26 +189,24 @@ def avg_raw_per_peptide_by_sample(raw_df):
             avg_intensity = mean(v)
 
         # Need to speed up search by running binary on a sorted list of peptide sequences.
-        # If binary_search returns false, then add to bubble_idx for bubble_sorting; if true,
-        # no need to add peptide sequence to bubble_idx.
+        # Using SortedList method in SortedContainers library for this! .add function allows
+        # for inplace insertion of new values into the list while .index on the SortedList
+        # returns the index if found. If not found, returns ValueError that is used to then
+        # add the peptide sequence to the list.
         print('Running binary search')
         start = time.time()
-        found_state = binary_search(bubble_idx, peptide_sequence)
-        end = time.time()
-        dur = round(end - start, ndigits = 10)
-        print('Binary search ran in {} seconds'.format(dur))
-        if found_state == -1:
+        sorted_idx = SortedList(sorted_idx)
+        try:
+            sorted_idx.index
+        except ValueError:
             idx_len = len(idx)
             print('Peptide Sequences: ' + str(idx_len))
             idx.append(peptide_sequence)
-            bubble_idx.append(peptide_sequence)
-            # Perform bubble sort to enable binary search for speed up!
-            print('Running bubble_sort')
-            start = time.time()
-            bubble_idx = bubble_sort(bubble_idx)
-            end = time.time()
-            dur = round(end - start, ndigits = 10)
-            print('Bubble sort ran in {} seconds'.format(dur))
+            sorted_idx.add(peptide_sequence)
+        
+        end = time.time()
+        dur = round(end - start, ndigits = 10)
+        print('Binary search ran in {} seconds'.format(dur))
 
         if sample_name in matrix:
             matrix[sample_name].append(avg_intensity)
@@ -392,40 +391,6 @@ def keepAminoAcidsOnly(s):
         if(i.isalpha()):
             t+=i
     return t
-
-def bubble_sort(idx_list):
-    length = len(idx_list) - 1
-    unsorted = True
-
-    while unsorted:
-        unsorted = False
-        for element in range(0,length):
-            if idx_list[element] > idx_list[element + 1]:
-                hold = idx_list[element + 1]
-                idx_list[element + 1] = idx_list[element]
-                idx_list[element] = hold
-                unsorted = True   
-
-    return idx_list
-
-def binary_search(idx, word):
-    first = 0
-    last = len(idx) - 1
-    index = -1
-    while (first <= last) and (index == -1):
-        mid = (first+last) // 2
-        if idx[mid] == word:
-            index = mid
-        else:
-            if word < idx[mid]:
-                last = mid - 1
-            else:
-                first = mid + 1
-    
-    if index > -1:
-        print('Matched existing ' + word)
-
-    return index
 
 if __name__ == '__main__':
     main()
