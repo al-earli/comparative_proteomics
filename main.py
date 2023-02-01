@@ -193,8 +193,10 @@ def avg_raw_per_peptide_by_sample(raw_df):
         # for inplace insertion of new values into the list while .index on the SortedList
         # returns the index if found. If not found, returns ValueError that is used to then
         # add the peptide sequence to the list.
-        print('Running binary search')
-        start = time.time()
+
+        # print('Running binary search')
+        # start = time.time()
+        
         try:
             sorted_idx.index(peptide_sequence)
         except ValueError:
@@ -203,9 +205,9 @@ def avg_raw_per_peptide_by_sample(raw_df):
             idx.append(peptide_sequence)
             sorted_idx.add(peptide_sequence)
         
-        end = time.time()
-        dur = round(end - start, ndigits = 10)
-        print('Binary search ran in {} seconds'.format(dur))
+        # end = time.time()
+        # dur = round(end - start, ndigits = 10)
+        # print('Binary search ran in {} seconds'.format(dur))
 
         if sample_name in matrix:
             matrix[sample_name].append(avg_intensity)
