@@ -74,30 +74,41 @@ def main(args=None):
     # Now that we have significant overlap in peptide sequences, let's create
     # dataframes that store the raw peptide intensities and normalize each
     # dataset using z-score
+    print('Creating raw intensity matrix for dataset 1')
     d1_raw_df = store_raw_intensities(args.d1, args.d1_type, args.d1_sampleMap)
-    print(list(d1_raw_df))
-    
-    
+    print('Writing raw intensity matrix for dataset 1 as csv file')
     d1_raw_df.to_csv('./full_raw_CPTAC_TMT10.csv')
+    print('Creating raw intensity matrix for dataset 2')
     d2_raw_df = store_raw_intensities(args.d2, args.d2_type, args.d2_sampleMap)
+    print('Writing raw intensity matrix for dataset 1 as csv file')
     d2_raw_df.to_csv('./full_raw_Earli_DIA.csv')
-
+    print('Creating zscore matrix for dataset 1')
     d1_zscore_df = compute_zscore(d1_raw_df)
+    print('Writing zscore matrix for dataset 1 to csv')
     d1_zscore_df.to_csv('./full_zscore_CPTAC_TMT10.csv')
+    print('Creating zscore matrix for dataset 2')
     d2_zscore_df = compute_zscore(d2_raw_df)
+    print('Writing zscore matrix for dataset 1 to csv')
     d2_zscore_df.to_csv('./full_zscore_Earli_DIA.csv')
 
     # Subset the raw intensities by the intersected peptide sequences for each dataframe
-    # print(intersection_list)
+    print('Creating intersection raw intensity matrix for dataset 1')
     subset_d1_raw_df = d1_raw_df.loc[intersection_list]
+    print('Writing intersection raw intensity matrix for dataset 1 as csv')
     subset_d1_raw_df.to_csv('./intersection_raw_CPTAC_TMT10.csv')
+    print('Creating intersection raw intensity matrix for dataset 2')
     subset_d2_raw_df = d2_raw_df.loc[intersection_list]
+    print('Writing intersection raw intensity matrix for dataset 2 as csv')
     subset_d2_raw_df.to_csv('./intersection_raw_Earli_DIA.csv')
 
     # Subset the z-scores by the intersected peptide_sequences for each dataframe
+    print('Creating intersection zscore intensity matrix for dataset 1')
     subset_d1_zscore_df = d1_zscore_df.loc[intersection_list]
+    print('Writing intersection zscore intensity matrix for dataset 1 as csv')
     subset_d1_zscore_df.to_csv('./intersection_zscore_CPTAC_TMT10.csv')
+    print('Creating intersection zscore intensity matrix for dataset 2')
     subset_d2_zscore_df = d2_zscore_df.loc[intersection_list]
+    print('Writing intersection zscore intensity matrix for dataset 2 as csv')
     subset_d2_zscore_df.to_csv('./intersection_zscore_Earli_DIA.csv')
 
     # Make full featureData.csv file
@@ -136,13 +147,6 @@ def compute_zscore(pd_matrix_df):
 def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
     sampleMap_dict = {}
     sampleMap_dict = create_sampleMap_dict(ds_type, ds_sampleMap, sampleMap_dict)
-    
-    #
-    
-    print(sampleMap_dict)
-    
-    #
-
     raw_df = {}
     dir = os.fsencode(ds_folder)
     for file in os.listdir(dir):
