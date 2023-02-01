@@ -177,7 +177,7 @@ def avg_raw_per_peptide_by_sample(raw_df):
     # for the sample
 
     idx = []
-    sorted_idx = []
+    sorted_idx = SortedList()
     matrix = {}
     for k, v in raw_df.items():
         k_parts = re.split('_', k)
@@ -195,9 +195,8 @@ def avg_raw_per_peptide_by_sample(raw_df):
         # add the peptide sequence to the list.
         print('Running binary search')
         start = time.time()
-        sorted_idx = SortedList(sorted_idx)
         try:
-            sorted_idx.index
+            sorted_idx.index(peptide_sequence)
         except ValueError:
             idx_len = len(idx)
             print('Peptide Sequences: ' + str(idx_len))
