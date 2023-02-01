@@ -268,10 +268,12 @@ def create_sampleMap_dict(ds_type, ds_sampleMap, sm_dict):
         for line in dat[1:]:
             line = line.strip()
             arr = line.split("\t")
-            # Only grab sample names where Specimen Label starts with CPT, otherwise, it refers to internal reference sample
-            # Storage for TMT10 data uses the start of the file name containing intensity data as the key and the value is
-            # a list of the actual sample names in the order reported (8, 9, or 10 depending on the mapping file)
-            if re.match('CPT', arr[2]): 
+            # Only grab sample names that are in positions 1-8, otherwise, it refers to internal reference sample
+            # Storage for TMT10 data uses the start of the file name containing intensity data as the key and the
+            # value is a list of the actual sample names in the order reported depending on the mapping file
+            if re.match('130C', arr[5]):
+                next
+            else: 
                 name = arr[1]
                 fn = arr[7]
                 fn_parts = re.split('_', fn)
