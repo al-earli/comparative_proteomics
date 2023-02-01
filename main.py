@@ -4,7 +4,7 @@
 
 #!/usr/bin/python3
 import argparse
-import os
+import os, sys
 import re
 import pandas as pd
 import time
@@ -166,44 +166,18 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
             elif ds_type == 'DIA':
                 raw_df = store_raw_with_sampleMap_DIA(df, sampleMap_dict, raw_df)
     
+    print('From raw dictionary that should be sorted')
+    iterator = iter(raw_df.items())
+    for i in range(5):
+        print(next(iterator))
+
     avg_raw_df = avg_raw_per_peptide_by_sample(raw_df)
-    # Format dictionary to pandas DataFrame object
-    # key is in the format peptide_sequence + "_" + sample_name and value is an average raw peptide intensity
-    idx = avg_raw_df.keys()
-    sorted_pseq = SortedList()
-    sorted_sname = SortedList()
-    for i in len(idx):
-        peptide_seq, sample_name = re.split("_",idx[i])
-        if sorted_pseq.__contains__(peptide_seq) == True:
-            next
-        else:
-            sorted_pseq.add(peptide_seq)
-
-        if sorted_sname.__contains__(sample_name) == True:
-            next
-        else:
-            sorted_sname.add(sample_name)
+    iterator = iter(avg_raw_df.items())
+    for i in range(5):
+        print(next(iterator))
     
-    # nested for loops to build the matrix to create the pandas dataframe
-    matrix = {}
-    sorted_sname_as_list = sorted_sname.irange()
-    print('Unique sample names: ' + str(len(sorted_sname_as_list)))
-    sorted_pseq_as_list = sorted_pseq.irange()
-    print('Unique peptides: ' + str(len(sorted_pseq_as_list)))
+    sys.exit()
 
-    print('Set up matrix for pandas dataframe.')
-    for i in sorted_pseq_as_list.items():
-        for j in sorted_sname_as_list.items():
-            built_key = i + "_" + j
-            if avg_raw_df.get(built_key) == None:
-                if j in matrix:
-                    matrix[j].append(None)
-                else:
-                    matrix[j] = [None]
-            else:
-                v = avg_raw_df[built_key]
-                matrix[j].append(v)
-    formatted_avg_raw_df = pd.DataFrame(matrix, index=sorted_pseq_as_list)
     print('Finished creating pandas dataframe.')
     return formatted_avg_raw_df
 
@@ -213,17 +187,17 @@ def avg_raw_per_peptide_by_sample(raw_df):
     # especially true in the case of TMT style proteomics where multiple fractions are screened per
     # pool of samples and the same peptide may be identified across multiple fraction data files 
     # for the sample
+    print('Computing avg intensity per peptide by sample')
     avg_raw_df = {}
     for k, v in raw_df.items():
-        if len(v) == 1:
-            avg_intensity = v[0]
-        else:
-            avg_intensity = mean(v)
+        for m, n in raw_df[k].items():
+            if len(n) == 1:
+                avg_intensity = n[0]
+            else:
+                avg_intensity = mean(n)
 
-        if k in avg_raw_df:
-            avg_raw_df[k].append(avg_intensity)
-        else:
-            avg_raw_df[k] = [avg_intensity]
+            print('Insert that intensity value for matrix position ' + k + ' : ' + m)
+            avg_raw_df[k][m] = avg_intensity
     
     return avg_raw_df
 
@@ -233,9 +207,13 @@ def store_raw_with_sampleMap_TMT(df, sampleMap_dict, non_avg_raw_df):
     # Averaging happens in a separate function.
     print('There are ' + str(len(non_avg_raw_df.keys())) + ' keys in the non averaged raw dictionary so far.')
     if len(non_avg_raw_df.keys()) > 0:
-        sorted_idx = SortedList(non_avg_raw_df.keys())
+        sorted_pseq = SortedList(non_avg_raw_df.keys())
+        if len(non_avg_raw_df[0].keys()) > 0:
+            sorted_sname = SortedList(non_avg_raw_df[0].keys())
     else:
-        sorted_idx = SortedList()
+        sorted_pseq = SortedList()
+        sorted_sname = SortedList()
+
 
     for line in df[1:]:
         arr = line.split("\t")
@@ -256,19 +234,20 @@ def store_raw_with_sampleMap_TMT(df, sampleMap_dict, non_avg_raw_df):
                 intensity_val = intensity_parts[0]
             else:
                 intensity_val = intensity
-                
-            k = peptide_sequence + "_" + sample_name
-            intensity_val = float(intensity_val)
-            # Need to speed up search by running binary on a sorted list of peptide sequences.
-            # Using SortedList method in SortedContainers library for this! .add function allows
-            # for inplace insertion of new values into the list while .__contains__ on the SortedList
-            # returns True if found. If not found, then add the peptide sequence to the list.
-            if sorted_idx.__contains__(k) == True:
-                non_avg_raw_df[k].append(intensity_val)
+            intensity_val = float(intensity_val)  
+            
+            # Build dictionary of dictionaries containing lists of intensity values
+            
+            if sorted_pseq.__contains__(peptide_sequence) == True:
+                if sorted_sname.__contains__(sample_name) == True:
+                    non_avg_raw_df[peptide_sequence][sample_name].append(intensity_val)
+                else:
+                    non_avg_raw_df[peptide_sequence][sample_name] = [intensity_val]
+                    sorted_sname.add(sample_name)
             else:
-                non_avg_raw_df[k] = [intensity_val]
-                sorted_idx.add(k)
-
+                non_avg_raw_df[peptide_sequence][sample_name] = [intensity_val]
+                sorted_pseq.add(peptide_sequence)
+                
     return non_avg_raw_df
 
 def store_raw_with_sampleMap_DIA(df, sampleMap_dict, non_avg_raw_df):
