@@ -197,14 +197,14 @@ def avg_raw_per_peptide_by_sample(raw_df):
         # print('Running binary search')
         # start = time.time()
 
-        try:
-            sorted_idx.index(peptide_sequence)
-        except ValueError:
+        if sorted_idx.__contains__(peptide_sequence):
+            next
+        else:
+            idx.append(peptide_sequence)
+            sorted_idx.add(peptide_sequence)
             idx_len = len(idx)
             if idx_len % 10000 == 0:
                 print('Peptide Sequences: ' + str(idx_len))
-            idx.append(peptide_sequence)
-            sorted_idx.add(peptide_sequence)
         
         # end = time.time()
         # dur = round(end - start, ndigits = 10)
