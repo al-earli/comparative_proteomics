@@ -34,6 +34,7 @@ def get_parser():
                         help='sample mapping file that dereferences sample id to patient id')
     parser.add_argument('-d1_phenoData',
                         action='store',
+                        required=True,
                         help='sample annotation file to add to R ExpressionSet Object')
     parser.add_argument('-d2',
                         action='store',
@@ -50,7 +51,11 @@ def get_parser():
                         help='sample mapping file that dereferences sample id to patient id')
     parser.add_argument('-d2_phenoData',
                         action='store',
+                        required=True,
                         help='sample annotation file to add to R ExpressionSet Object')
+    parser.add_argument('-o',
+                        action='store',
+                        help='path to folder to store output results')
     return parser
 
 def main(args=None):
@@ -58,91 +63,198 @@ def main(args=None):
     parser = get_parser()
     args = parser.parse_args(args)
 
+    output_path = "./"
+    if args.o:
+        output_path = args.o
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+            os.makedirs(output_path + "/Dataset_1")
+            os.makedirs(output_path + "/Dataset_2")
+            os.makedirs(output_path + "/Intersection")
+    else:
+        os.makedirs(output_path + "/Dataset_1")
+        os.makedirs(output_path + "/Dataset_2")
+        os.makedirs(output_path + "/Intersection")
+
     d1_dict = {}
     d2_dict = {}
     # Get the unique peptide sequences detected between the two datasets, 
     # then compare to get the intersection for our comparitive analysis
+    print('Step 1:')
+    print('Getting unique set of peptides detected by MS platform for dataset 1.')
     get_unique_peptide_sequences(args.d1, args.d1_type, d1_dict)
+    print('Getting unique set of peptides detected by MS platform for dataset 2.')
     get_unique_peptide_sequences(args.d2, args.d2_type, d2_dict)
 
     d1_len = len(d1_dict.keys())
     d2_len = len(d2_dict.keys())
     print('Dataset 1: ' + str(d1_len) + ', Dataset 2: ' + str(d2_len))
+
+    print('Step 2:')
+    print('Identify intersection of unique peptide sequences between two datasets.')
     intersection = d1_dict.keys() & d2_dict.keys()
     intersection_list = list(intersection)
+    ordered_intersection_list = SortedList(intersection_list)
     num_of_matches = len(intersection)
     print('There are ' + str(num_of_matches) + ' matches between the two datasets at the peptide level.')
 
     # Now that we have significant overlap in peptide sequences, let's create
     # dataframes that store the raw peptide intensities and normalize each
     # dataset using z-score
+    print('Step 3:')
     print('Creating raw intensity matrix for dataset 1')
-    d1_raw_df = store_raw_intensities(args.d1, args.d1_type, args.d1_sampleMap)
+    d1_raw_df, d1_sorted_snames, d1_sorted_pseqs = store_raw_intensities(args.d1, args.d1_type, args.d1_sampleMap)
     print('Writing raw intensity matrix for dataset 1 as csv file')
-    print(type(d1_raw_df))
-    d1_raw_df.to_csv('./full_raw_CPTAC_TMT10.csv')
+    d1_raw_fn = output_path + "/Dataset_1/full_raw_" + args.d1_type + ".csv"
+    d1_raw_df.to_csv(d1_raw_fn)
     print('Creating raw intensity matrix for dataset 2')
-    d2_raw_df = store_raw_intensities(args.d2, args.d2_type, args.d2_sampleMap)
+    d2_raw_df, d2_sorted_snames, d2_sorted_pseqs = store_raw_intensities(args.d2, args.d2_type, args.d2_sampleMap)
     print('Writing raw intensity matrix for dataset 1 as csv file')
-    d2_raw_df.to_csv('./full_raw_Earli_DIA.csv')
+    d2_raw_fn = output_path + "/Dataset_2/full_raw_" + args.d2_type + ".csv"
+    d2_raw_df.to_csv(d2_raw_fn)
  
+    print('Step 4:')
     print('Creating zscore matrix for dataset 1')
     d1_zscore_df = d1_raw_df.apply(z_score)
     print('Writing zscore matrix for dataset 1 to csv')
-    d1_zscore_df.to_csv('./full_zscore_CPTAC_TMT10.csv')
+    d1_zscore_fn = output_path + "/Dataset_1/full_zscore_" + args.d1_type  + ".csv"
+    d1_zscore_df.to_csv(d1_zscore_fn)
     print('Creating zscore matrix for dataset 2')
     d2_zscore_df = d2_raw_df.apply(z_score)
-    print('Writing zscore matrix for dataset 1 to csv')
-    d2_zscore_df.to_csv('./full_zscore_Earli_DIA.csv')
-
-    sys.exit()
-    # Subset the raw intensities by the intersected peptide sequences for each dataframe
-    print('Creating intersection raw intensity matrix for dataset 1')
-    subset_d1_raw_df = d1_raw_df.loc[intersection_list]
-    print('Writing intersection raw intensity matrix for dataset 1 as csv')
-    subset_d1_raw_df.to_csv('./intersection_raw_CPTAC_TMT10.csv')
-    print('Creating intersection raw intensity matrix for dataset 2')
-    subset_d2_raw_df = d2_raw_df.loc[intersection_list]
-    print('Writing intersection raw intensity matrix for dataset 2 as csv')
-    subset_d2_raw_df.to_csv('./intersection_raw_Earli_DIA.csv')
-
-    # Subset the z-scores by the intersected peptide_sequences for each dataframe
-    print('Creating intersection zscore intensity matrix for dataset 1')
-    subset_d1_zscore_df = d1_zscore_df.loc[intersection_list]
-    print('Writing intersection zscore intensity matrix for dataset 1 as csv')
-    subset_d1_zscore_df.to_csv('./intersection_zscore_CPTAC_TMT10.csv')
-    print('Creating intersection zscore intensity matrix for dataset 2')
-    subset_d2_zscore_df = d2_zscore_df.loc[intersection_list]
-    print('Writing intersection zscore intensity matrix for dataset 2 as csv')
-    subset_d2_zscore_df.to_csv('./intersection_zscore_Earli_DIA.csv')
+    print('Writing zscore matrix for dataset 2 to csv')
+    d2_zscore_fn = output_path + "/Dataset_2/full_zscore_" + args.d2_type  + ".csv"
+    d2_zscore_df.to_csv(d2_zscore_fn)
 
     # Make full featureData.csv file
-    featureData = open('./full_featureData_CPTAC_TMT10.csv', 'w')
-    fD_header = "Peptide_Sequence,NCBI_Protein_ID,Source\n"
-    featureData.write(fD_header)
-    for k,v in d1_dict:
-        line = k + "," + v + ",CPTAC\n"
-        featureData.write(line)
-    featureData.close()
+    print('Step 5:')
+    print('Writing full featureData file for dataset 1: R eSet object creation.')
+    create_featureData("full", args.d1_type, output_path, "1", d1_dict, d1_sorted_pseqs)
+    print('Writing full featureData file for dataset 2: R eSet object creation.')
+    create_featureData("full", args.d2_type, output_path, "2", d2_dict, d2_sorted_pseqs)
 
-    featureData = open('./full_featureData_Earli_DIA.csv', 'w')
-    fD_header = "Peptide_Sequence,UniprotID,Gene_Symbol,Source\n"
-    featureData.write(fD_header)
-    for k,v in d2_dict:
-        pid, gs = re.split(';', v)
-        line = k + "," + pid + "," + gs + ",Earli\n"
-        featureData.write(line)
-    featureData.close()
+    # Make full phenoData.csv file
+    print('Step 6:')
+    print('Writing full phenoData file for dataset 1: R eSet Object creation.')
+    create_full_phenoData(args.d1_type, output_path, "1", d1_sorted_snames, args.d1_phenoData)
+    print('Writing full phenoData file for dataset 2: R eSet Object creation.')
+    create_full_phenoData(args.d1_type, output_path, "2", d2_sorted_snames, args.d2_phenoData)
+
+    # Subset the raw intensities by the intersected peptide sequences for each dataframe then merge
+    print('Step 7:')
+    print('Creating intersection raw intensity matrix for dataset 1')
+    subset_d1_raw_df = d1_raw_df.loc[ordered_intersection_list]
+    print('Creating intersection raw intensity matrix for dataset 2')
+    subset_d2_raw_df = d2_raw_df.loc[ordered_intersection_list]
+    print('Merging two dataframe by index (by peptide sequence).')
+    merged_subset_raw_df = subset_d1_raw_df.join(subset_d2_raw_df)
+    print('Writing intersection raw intensity matrix for subset dataset as csv')
+    mri_fn = output_path + "Intersection/intersection_raw_ds1ds2.csv"
+    merged_subset_raw_df.to_csv(mri_fn)
+
+    # Subset the z-scores by the intersected peptide_sequences for each dataframe then merge
+    print('Step 8:')
+    print('Creating intersection zscore intensity matrix for dataset 1')
+    subset_d1_zscore_df = d1_zscore_df.loc[ordered_intersection_list]
+    print('Creating intersection zscore intensity matrix for dataset 2')
+    subset_d2_zscore_df = d2_zscore_df.loc[ordered_intersection_list]
+    print('Merging two zscore dataframes by index (by peptide sequence).')
+    merged_subset_zscore_df = subset_d1_zscore_df.join(subset_d2_zscore_df)
+    print('Writing intersection zscore intensity matrix for dataset 2 as csv')
+    mzs_fn = output_path + "Intersection/intersection_zscore_ds1ds2.csv"
+    merged_subset_zscore_df.to_csv(mzs_fn)
 
     # Make subset featureData.txt file
-    featureDataIntersection = open('./intersection_featureData.csv', 'w')
-    fDI_header = "Peptide_Sequence,UniprotID,Gene_Symbol\n"
-    for i in intersection_list:
-        v = d2_dict[i]
-        pid, gs = re.split(';', v)
-        line = i + "," + pid + "," + gs + "\n"
-        featureDataIntersection.write(line)
-    featureDataIntersection.close()
+    print('Step 9:')
+    print('Create intersection featureData file for eSet building in R.')
+    create_featureData("intersection", args.d2_type, output_path, 2, d2_dict, d2_sorted_pseqs)
+
+    # Make subset phenoData.txt file
+    print('Step 10:')
+    print('Create intersection phenoData file for eSet building in R.')
+    create_merged_phenoData(output_path, d1_sorted_snames, args.d1_phenoData, d2_sorted_snames, args.d2_phenoData)
+
+def create_merged_phenoData(output_path, d1_sorted_snames, d1_phenoData, d2_sorted_snames, d2_phenoData):
+    # Read in the d1 input phenoData file and parse.
+    fi1 = open(d1_phenoData, 'r')
+    df1 = fi1.readlines()
+    fi1.close()
+    # Read in the d2 input phenoData file and parse.
+    fi2 = open(d2_phenoData, 'r')
+    df2 = fi2.readlines()
+    fi2.close()
+    # iterate over d_sorted_snames to match, subset, and reorder if necessary
+    pD_dict = {}
+    for line in df1[1:]:
+        line.strip()
+        arr = line.split(",")
+        pD_dict[arr[0]] = line
+
+    for line in df2[1:]:
+        line.strip()
+        arr = line.split(",")
+        pD_dict[arr[0]] = line
+
+    fn = output_path + "Intersection/intersection_phenoData_ds1ds2.csv"
+    phenoData = open(fn, 'w')
+    pD_header = df1[0].strip()
+    phenoData.write(pD_header + "\n")
+    for sname in d1_sorted_snames:
+        phenoData.write(pD_dict[sname])
+    phenoData.write("\n")
+    for sname in d2_sorted_snames:
+        phenoData.write(pD_dict[sname])
+    phenoData.close()
+    return
+
+def create_full_phenoData(d_type, output_path, num, d_sorted_snames, phenoData_input):
+    
+    # Read in the input phenoData file and parse.
+    fi = open(phenoData_input, 'r')
+    df = fi.readlines()
+    fi.close()
+    # iterate over d_sorted_snames to match, subset, and reorder if necessary
+    pD_dict = {}
+    for line in df[1:]:
+        line.strip()
+        arr = line.split(",")
+        pD_dict[arr[0]] = line
+
+    fn = output_path + "Dataset_" + str(num) + "/full_phenoData_" + d_type + ".csv"
+    phenoData = open(fn, 'w')
+    pD_header = df[0].strip()
+    phenoData.write(pD_header + "\n")
+    for sname in d_sorted_snames:
+        phenoData.write(pD_dict[sname])
+    phenoData.close()
+
+    return
+
+def create_featureData(fD_type, d_type, output_path, num, d_dict, d_sorted_pseqs):
+    if fD_type == "full":
+        fn = output_path + "Dataset_" + str(num) + "/" + fD_type + "_featureData_" + d_type + ".csv" 
+    elif fD_type == "intersection":
+        fn = output_path + "Intersection/" + fD_type + "_featureData_ds1ds2.csv"
+
+    if d_type == 'TMT10':
+        featureData = open(fn, 'w')
+        fD_header = "Peptide_Sequence,NCBI_Protein_ID\n"
+        featureData.write(fD_header)
+        for i in d_sorted_pseqs:
+            v = d_dict[i]
+            line = i + "," + v + "\n"
+            featureData.write(line)
+        featureData.close()
+    elif d_type == 'DIA':
+        featureData = open(fn, 'w')
+        fD_header = "Peptide_Sequence,UniprotID,Gene_Symbol\n"
+        featureData.write(fD_header)
+        for i in d_sorted_pseqs:
+            v = d_dict[i]
+            pid, gs = re.split(',', v)
+            line = i + "," + pid + "," + gs + "\n"
+            featureData.write(line)
+        featureData.close()
+    return
 
 def z_score(df): return (df-df.mean())/df.std(ddof=0)
 
@@ -187,10 +299,6 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
             sorted_sname.add(sample_name)
     sorted_sname_as_list = list(sorted_sname.irange())
     sorted_pseq_as_list = list(sorted_pseq.irange())
-    # x = len(sorted_sname_as_list)
-    # print('There are ' + str(x) + ' unique sample names')
-    # y = len(sorted_pseq_as_list)
-    # print('There are ' + str(y) + ' unique peptide sequences')
 
     # nested for loops to build the matrix to create the pandas dataframe
     matrix = {}
@@ -212,7 +320,7 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
                     matrix[j].append(float('nan'))
     
     formatted_avg_raw_df = pd.DataFrame(matrix, index=sorted_pseq_as_list)
-    return formatted_avg_raw_df
+    return formatted_avg_raw_df, sorted_sname_as_list, sorted_pseq_as_list
 
 def avg_raw_per_peptide_by_sample(raw_df):
     # This function is necesary to average the intensity values per peptide per sample before some
@@ -384,7 +492,6 @@ def fill_detected_peptides_TMT10(rdata, dict):
         protein = arr[13]
         if re.search('\(', protein):
             protein = re.sub(r'\(.+\)', '', protein)
-        # print('Protein: ' + protein + '; Peptide Seq: ' + peptide_sequence)
         # Store this in a dictionary where the peptide_sequence detected should be unique
         dict[peptide_sequence] = protein
     return
@@ -407,9 +514,8 @@ def fill_detected_peptides_DIA(rdata, dict):
             peptide_sequence = re.sub('\\[OX\\]', '', peptide_sequence)
         protein = arr[0]
         gene = arr[1]
-        pro_gs = protein + ";" + gene
+        pro_gs = protein + "," + gene
         dict[peptide_sequence] = pro_gs
-        # print('Protein: ' + protein + '; Peptide seq: ' + peptide_sequence)
     return
 
 def keepAminoAcidsOnly(s):
