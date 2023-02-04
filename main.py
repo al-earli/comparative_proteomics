@@ -264,11 +264,16 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
     sampleMap_dict = create_sampleMap_dict(ds_type, ds_sampleMap, sampleMap_dict)
     raw_df = {}
     dir = os.fsencode(ds_folder)
+    file_num = len(os.listdir(dir))
+    curr_file_num = 0
     for file in os.listdir(dir):
+        curr_file_num += 1
+        print('Working on ' + str(curr_file_num) + ' of ' + str(file_num))
         filename = os.fsdecode(file)
         if filename.startswith("phenoData"):
             next
         elif filename.endswith(".psm") or filename.endswith(".csv"):
+
             df = []
             fn = ds_folder + "/" + filename
             fi = open(fn, 'r')
