@@ -3,12 +3,13 @@
 # level to enable an apples to apples comparison.
 
 #!/usr/bin/python3
+import sys
 import argparse
 import os
 import re
 import pandas as pd
-# import time
-import sys
+import multiprocessing as mp
+from multiprocessing import Pool
 from numpy import mean
 from sortedcontainers import SortedList
 
@@ -148,7 +149,7 @@ def main(args=None):
     print('Merging two dataframe by index (by peptide sequence).')
     merged_subset_raw_df = subset_d1_raw_df.join(subset_d2_raw_df)
     print('Writing intersection raw intensity matrix for subset dataset as csv')
-    mri_fn = output_path + "Intersection/intersection_raw_ds1ds2.csv"
+    mri_fn = output_path + "/Intersection/intersection_raw_ds1ds2.csv"
     merged_subset_raw_df.to_csv(mri_fn)
 
     # Subset the z-scores by the intersected peptide_sequences for each dataframe then merge
@@ -160,7 +161,7 @@ def main(args=None):
     print('Merging two zscore dataframes by index (by peptide sequence).')
     merged_subset_zscore_df = subset_d1_zscore_df.join(subset_d2_zscore_df)
     print('Writing intersection zscore intensity matrix for dataset 2 as csv')
-    mzs_fn = output_path + "Intersection/intersection_zscore_ds1ds2.csv"
+    mzs_fn = output_path + "/Intersection/intersection_zscore_ds1ds2.csv"
     merged_subset_zscore_df.to_csv(mzs_fn)
 
     # Make subset featureData.txt file
@@ -194,7 +195,7 @@ def create_merged_phenoData(output_path, d1_sorted_snames, d1_phenoData, d2_sort
         arr = line.split(",")
         pD_dict[arr[0]] = line
 
-    fn = output_path + "Intersection/intersection_phenoData_ds1ds2.csv"
+    fn = output_path + "/Intersection/intersection_phenoData_ds1ds2.csv"
     phenoData = open(fn, 'w')
     pD_header = df1[0].strip()
     phenoData.write(pD_header + "\n")
@@ -219,7 +220,7 @@ def create_full_phenoData(d_type, output_path, num, d_sorted_snames, phenoData_i
         arr = line.split(",")
         pD_dict[arr[0]] = line
 
-    fn = output_path + "Dataset_" + str(num) + "/full_phenoData_" + d_type + ".csv"
+    fn = output_path + "/Dataset_" + str(num) + "/full_phenoData_" + d_type + ".csv"
     phenoData = open(fn, 'w')
     pD_header = df[0].strip()
     phenoData.write(pD_header + "\n")
@@ -231,7 +232,7 @@ def create_full_phenoData(d_type, output_path, num, d_sorted_snames, phenoData_i
 
 def create_featureData(fD_type, d_type, output_path, num, d_dict, d_sorted_pseqs):
     if fD_type == "full":
-        fn = output_path + "Dataset_" + str(num) + "/" + fD_type + "_featureData_" + d_type + ".csv" 
+        fn = output_path + "/Dataset_" + str(num) + "/" + fD_type + "_featureData_" + d_type + ".csv" 
     elif fD_type == "intersection":
         fn = output_path + "Intersection/" + fD_type + "_featureData_ds1ds2.csv"
 
@@ -300,9 +301,43 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
     sorted_sname_as_list = list(sorted_sname.irange())
     sorted_pseq_as_list = list(sorted_pseq.irange())
 
+
+    cpu_count = mp.cpu_count() - 1
+    # Here let's use multiprocessing to improve the matrix creation time
+    # Simplistic method to speed up is divide the number of unique pseqs by the number of available
+    # cpus and launch that number of processes. Each process would tackle a smaller set of pseqs from 
+    # the list to store the matrix in memory, then merge the multiple matrixes together before creating
+    # the final matrix in pandas DataFrame format.
+
+    print(str(cpu_count) + 'cpus. How many should we use?')
+    total_u_pseqs = len(sorted_pseq_as_list)
+    print(str(total_u_pseqs) + 'unique peptides. The numerator!')
+    
+    x_counter = round(total_u_pseqs / cpu_count)
+    print('We need to process an average of ' + str(x_counter) + ' peptides per process.')
+    list_of_pseq_indexes = [sorted_pseq_as_list[i * x_counter:(i + 1) * x_counter] 
+                            for i in range((len(sorted_pseq_as_list) + x_counter - 1) // x_counter )]
+
+    #print(list_of_pseq_indexes[0])
+    # create tuples that contain the parameters for the function build_matrix
+    tuples_list = []
+    for a in range(len(list_of_pseq_indexes)):
+        created_tuple = (a, list_of_pseq_indexes[a], sorted_sname_as_list, avg_raw_df)
+        tuples_list.append(created_tuple)
+    with Pool() as pool:
+        matrices = pool.starmap(build_matrix, tuples_list)
+    # starmap forces blocking so that the returns stack in the order they are submitted as defined by the tuples_list
+    # just use pandas concat to merge the panda dataframes
+    formatted_avg_raw_df = pd.concat(matrices)
+    
+    return formatted_avg_raw_df, sorted_sname_as_list, sorted_pseq_as_list
+    
+    
+def build_matrix(order, list_of_pseq_indexes, sorted_sname_as_list, avg_raw_df):
     # nested for loops to build the matrix to create the pandas dataframe
+    # call a function to do this and then assemble afterwards
     matrix = {}
-    for i in sorted_pseq_as_list:
+    for i in list_of_pseq_indexes:
         for j in sorted_sname_as_list:
             built_key = i + "_" + j
             try:
@@ -319,8 +354,10 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
                     matrix[j] = list()
                     matrix[j].append(float('nan'))
     
-    formatted_avg_raw_df = pd.DataFrame(matrix, index=sorted_pseq_as_list)
-    return formatted_avg_raw_df, sorted_sname_as_list, sorted_pseq_as_list
+    formatted_avg_raw_df = pd.DataFrame(matrix, index=list_of_pseq_indexes)
+    print('Finished building matrix ' + str(order))
+    return formatted_avg_raw_df
+    
 
 def avg_raw_per_peptide_by_sample(raw_df):
     # This function is necesary to average the intensity values per peptide per sample before some
