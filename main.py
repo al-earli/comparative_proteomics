@@ -234,7 +234,7 @@ def create_featureData(fD_type, d_type, output_path, num, d_dict, d_sorted_pseqs
     if fD_type == "full":
         fn = output_path + "/Dataset_" + str(num) + "/" + fD_type + "_featureData_" + d_type + ".csv" 
     elif fD_type == "intersection":
-        fn = output_path + "Intersection/" + fD_type + "_featureData_ds1ds2.csv"
+        fn = output_path + "/Intersection/" + fD_type + "_featureData_ds1ds2.csv"
 
     if d_type == 'TMT10':
         featureData = open(fn, 'w')
