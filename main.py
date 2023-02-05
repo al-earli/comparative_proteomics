@@ -329,7 +329,7 @@ def store_raw_intensities(ds_folder, ds_type, ds_sampleMap):
     for a in range(len(list_of_pseq_indexes)):
         created_tuple = (a, list_of_pseq_indexes[a], sorted_sname_as_list, avg_raw_df)
         tuples_list.append(created_tuple)
-    with Pool() as pool:
+    with Pool(cpu_count) as pool:
         matrices = pool.starmap(build_matrix, tuples_list)
     # starmap forces blocking so that the returns stack in the order they are submitted as defined by the tuples_list
     # just use pandas concat to merge the panda dataframes
