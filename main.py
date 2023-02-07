@@ -167,7 +167,7 @@ def main(args=None):
     # Make subset featureData.txt file
     print('Step 9:')
     print('Create intersection featureData file for eSet building in R.')
-    create_featureData("intersection", args.d2_type, output_path, 2, d2_dict, d2_sorted_pseqs)
+    create_featureData("intersection", args.d2_type, output_path, 2, d2_dict, ordered_intersection_list)
 
     # Make subset phenoData.txt file
     print('Step 10:')
@@ -230,7 +230,7 @@ def create_full_phenoData(d_type, output_path, num, d_sorted_snames, phenoData_i
 
     return
 
-def create_featureData(fD_type, d_type, output_path, num, d_dict, d_sorted_pseqs):
+def create_featureData(fD_type, d_type, output_path, num, d_dict, ordered_intersection_pseqs):
     if fD_type == "full":
         fn = output_path + "/Dataset_" + str(num) + "/" + fD_type + "_featureData_" + d_type + ".csv" 
     elif fD_type == "intersection":
@@ -240,7 +240,7 @@ def create_featureData(fD_type, d_type, output_path, num, d_dict, d_sorted_pseqs
         featureData = open(fn, 'w')
         fD_header = "Peptide_Sequence,NCBI_Protein_ID\n"
         featureData.write(fD_header)
-        for i in d_sorted_pseqs:
+        for i in ordered_intersection_pseqs:
             v = d_dict[i]
             line = i + "," + v + "\n"
             featureData.write(line)
@@ -249,7 +249,7 @@ def create_featureData(fD_type, d_type, output_path, num, d_dict, d_sorted_pseqs
         featureData = open(fn, 'w')
         fD_header = "Peptide_Sequence,UniprotID,Gene_Symbol\n"
         featureData.write(fD_header)
-        for i in d_sorted_pseqs:
+        for i in ordered_intersection_pseqs:
             v = d_dict[i]
             pid, gs = re.split(',', v)
             line = i + "," + pid + "," + gs + "\n"
